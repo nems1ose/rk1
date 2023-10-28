@@ -10,88 +10,47 @@
 сортировка по сотрудникам произвольная.
 7 Вариант (Микропроцессор, Компьютер)
 """
-from operator import itemgetter
 
+from operator import itemgetter
 
 class Driver:
     """Микропроцессор"""
-
     def __init__(self, id, name, date, comp_id):
         self.id = id
         self.name = name
         self.date = date
         self.comp_id = comp_id
-
-
 class Computer:
     """Компьютер"""
-
     def __init__(self, id, name):
         self.id = id
         self.name = name
-
-
 class DriverInComputer:
     """
     'Микропроцессоры' для реализации
     связи многие-ко-многим
     """
-
     def __init__(self, comp_id, emp_id):
         self.comp_id = comp_id
         self.driver_id = emp_id
 
-
 # Компьютеры
-computers = [
-    Computer(1, 'MacBook'),
-    Computer(2, 'RedmiBook'),
-    Computer(3, 'Imac'),
-
-    Computer(11, 'XiaomiBook'),
-    Computer(22, 'Ipad'),
-    Computer(33, 'PopicBook'),
-]
-
+computers = [   Computer(1, 'MacBook'), Computer(2, 'RedmiBook'), Computer(3, 'Imac'),
+                Computer(11, 'XiaomiBook'), Computer(22, 'Ipad'), Computer(33, 'PopicBook'),]
 # Микропроцессоры
-drivers = [
-    Driver(1, 'Intel-i5' , 1998, 1),
-    Driver(2, 'Intel-i7',  2010, 2),
-    Driver(3, 'Intel-i9',  2021, 3),
-    Driver(4, 'AMD-3',  2001, 3),
-    Driver(5, 'AMD-6',  2004, 3),
-]
+drivers = [ Driver(1, 'Intel-i5' , 1998, 1), Driver(2, 'Intel-i7',  2010, 2),
+            Driver(3, 'Intel-i9',  2021, 3), Driver(4, 'AMD-3',  2001, 3), Driver(5, 'AMD-6',  2004, 3),]
 
-goslings = [
-    DriverInComputer(1, 1),
-    DriverInComputer(2, 2),
-    DriverInComputer(3, 3),
-    DriverInComputer(3, 4),
-    DriverInComputer(3, 5),
-
-    DriverInComputer(11, 1),
-    DriverInComputer(22, 2),
-    DriverInComputer(33, 3),
-    DriverInComputer(33, 4),
-    DriverInComputer(33, 5),
-]
-
+goslings = [    DriverInComputer(1, 1), DriverInComputer(2, 2), DriverInComputer(3, 3), DriverInComputer(3, 4), DriverInComputer(3, 5),
+                DriverInComputer(11, 1), DriverInComputer(22, 2), DriverInComputer(33, 3), DriverInComputer(33, 4), DriverInComputer(33, 5),]
 
 def main():
     # Соединение данных один-ко-многим
-    one_to_many_fq = [(comp.name, driver.name, driver.date)
-                      for comp in computers
-                      for driver in drivers
-                      if comp.id == driver.comp_id]
+    one_to_many_fq = [(comp.name, driver.name, driver.date) for comp in computers for driver in drivers if comp.id == driver.comp_id]
     # Соединение данных один-ко-многим
-    one_to_many_curr = [(comp.name, dia.comp_id, dia.driver_id)
-                      for comp in computers
-                      for dia in goslings
-                      if comp.id == dia.comp_id]
-
-    many_to_many_ans = [(comp_name, d.name)
-                    for comp_name, comp_id, driver_id in one_to_many_curr
-                    for d in drivers if d.id == driver_id]
+    one_to_many_curr = [(comp.name, dia.comp_id, dia.driver_id) for comp in computers for dia in goslings if comp.id == dia.comp_id]
+    # Соединение данных многие-ко-многим
+    many_to_many_ans = [(comp_name, d.name) for comp_name, comp_id, driver_id in one_to_many_curr for d in drivers if d.id == driver_id]
 
     print("First Question")
     sorted(one_to_many_fq, key=itemgetter(0))
